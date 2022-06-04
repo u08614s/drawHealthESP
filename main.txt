@@ -1,0 +1,97 @@
+#030EA6D4
+
+bctrl
+
+lis r2,0x1604
+
+lwz r12,-0xC(r2)
+cmpwi r12,0
+beq NULL
+lwz r12,0x194(r12)
+cmpwi r12,0x101
+beq END
+lwz r12,-0xC(r2)
+lwz r12,0x1F8(r12)
+lwz r12,0x30(r12)
+lfs f1,0xC(r12)
+bl hpf
+.long 0x005B0020
+.long 0x0025002E
+.long 0x00320066
+.long 0x0020005D
+.long 0
+hpf:
+mflr r5
+addi r3,r2,0x30
+li r4,0x64
+crset 4*cr1+eq
+lis r12,0x382
+ori r12,r12,0xC8C0
+mtctr r12
+bctrl
+b DRAWSTART
+
+NULL:
+bl nullf
+.long 0x005B0020
+.long 0x004E0055
+.long 0x004C004C
+.long 0x0020005D
+.long 0
+nullf:
+mflr r5
+addi r3,r2,0x30
+li r4,0x64
+crset 4*cr1+eq
+lis r12,0x382
+ori r12,r12,0xC8C0
+mtctr r12
+bctrl
+
+DRAWSTART:
+lis r12,0x30E
+ori r12,r12,0x4B3C
+mtctr r12
+bctrl
+
+lis r12,0x3F80 # 大きさ
+stw r12,0x20(r2)
+lfs f1,0x20(r2)
+lfs f2,0x20(r2)
+lis r12,0x30E
+ori r12,r12,0x4B6C
+mtctr r12
+bctrl
+
+li r3,0
+addi r4,r2,0x30
+lis r12,0x20B
+ori r12,r12,0x8D4
+mtctr r12
+bctrl
+
+mr r5,r3
+lis r4,0x109D
+lwz r4,-0x271C(r4)
+lwz r4,0x104(r4)
+li r6,0
+li r7,-9
+li r8,-1
+li r2,0x421
+li r3,0
+lis r12,0x313
+ori r12,r12,0x41F0
+mtctr r12
+bctrl
+lis r2,0x1604
+
+lis r12,0x30E
+ori r12,r12,0x4BD8
+mtctr r12
+bctrl
+
+END: # return
+lis r12,0x30E
+ori r12,r12,0xA6D8
+mtctr r12
+bctr
